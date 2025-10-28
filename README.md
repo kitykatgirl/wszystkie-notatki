@@ -1,3 +1,3 @@
 notatki
 
-w/ adam grynka @ szymon kania
+w/ adam grynka, michal bonanaty and szymon kania
