@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/zdjecie"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/zdjecie1" />
+
+    <TextView
+        android:id="@+id/tekstPolubienia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Polubienia: 0"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/przyciskPoprzednie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Poprzednie zdjęcie" />
+
+    <Button
+        android:id="@+id/przyciskNastepne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Następne zdjęcie" />
+
+    <Button
+        android:id="@+id/przyciskPolub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Polub" />
+</LinearLayout>

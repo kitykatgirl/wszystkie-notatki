@@ -1,0 +1,69 @@
+package com.example.twojaaplikacja;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.Random;
+
+public class MainActivity extends Activity {
+
+    // Zmienna przechowująca aktualną liczbę
+    private int liczba = 0;
+
+    // Klucz do zapisu liczby przy obrocie ekranu
+    private static final String KLUCZ_LICZBA = "liczba";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Połączenie z elementami interfejsu
+        TextView liczbaTekst = findViewById(R.id.liczbaTekst);
+        Button przyciskWylosuj = findViewById(R.id.przyciskWylosuj);
+        Button przyciskPlus = findViewById(R.id.przyciskPlus);
+        Button przyciskMinus = findViewById(R.id.przyciskMinus);
+
+        // Sprawdzenie, czy aplikacja była już wcześniej uruchomiona
+        // (np. po obrocie ekranu)
+        if (savedInstanceState != null) {
+            // Odczytanie zapisanej liczby
+            liczba = savedInstanceState.getInt(KLUCZ_LICZBA, 0);
+        } else {
+            // Pierwsze uruchomienie – ustawienie liczby na 0
+            liczba = 0;
+        }
+
+        // Wyświetlenie początkowej liczby
+        liczbaTekst.setText(String.valueOf(liczba));
+
+        // Przycisk "Wylosuj" – losuje nową liczbę od 1 do 100
+        przyciskWylosuj.setOnClickListener(v -> {
+            Random random = new Random();
+            liczba = random.nextInt(100) + 1; // losuje od 1 do 100
+            liczbaTekst.setText(String.valueOf(liczba));
+        });
+
+        // Przycisk "Plus" – zwiększa liczbę o 1
+        przyciskPlus.setOnClickListener(v -> {
+            liczba++;
+            liczbaTekst.setText(String.valueOf(liczba));
+        });
+
+        // Przycisk "Minus" – zmniejsza liczbę o 1
+        przyciskMinus.setOnClickListener(v -> {
+            liczba--;
+            liczbaTekst.setText(String.valueOf(liczba));
+        });
+    }
+
+    // Zapis danych przy obrocie ekranu
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Zapisujemy aktualną wartość liczby
+        outState.putInt(KLUCZ_LICZBA, liczba);
+    }
+}

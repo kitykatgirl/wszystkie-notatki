@@ -1,0 +1,101 @@
+package com.example.twojaaplikacja;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+public class MainActivity extends Activity {
+
+    // Lista postów w formacie "nazwaZdjecia:liczbaPolubien"
+    private ArrayList<String> posty = new ArrayList<>();
+    // Indeks aktualnie wyświetlanego zdjęcia (posta)
+    private int wybranyPost = 0;
+    // Nazwy zdjęć dostępnych w drawable
+    private String[] zdjecia = {"zdjecie1", "zdjecie2", "zdjecie3"};
+
+    // Klucze do zapisu danych przy obrocie ekranu
+    private static final String KLUCZ_POSTY = "posty";
+    private static final String KLUCZ_POZYCJA = "pozycja";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Połączenie z elementami interfejsu
+        ImageView zdjecie = findViewById(R.id.zdjecie);
+        TextView tekstPolubienia = findViewById(R.id.tekstPolubienia);
+        Button przyciskPoprzednie = findViewById(R.id.przyciskPoprzednie);
+        Button przyciskNastepne = findViewById(R.id.przyciskNastepne);
+        Button przyciskPolub = findViewById(R.id.przyciskPolub);
+
+        // Przywrócenie stanu po obrocie ekranu
+        if (savedInstanceState != null) {
+            ArrayList<String> zapisanePosty = savedInstanceState.getStringArrayList(KLUCZ_POSTY);
+            if (zapisanePosty != null) {
+                posty = zapisanePosty;
+            } else {
+                inicjalizujPosty();
+            }
+            wybranyPost = savedInstanceState.getInt(KLUCZ_POZYCJA, 0);
+        } else {
+            inicjalizujPosty();
+        }
+
+        // Wyświetlenie aktualnego zdjęcia
+        aktualizujWidok(zdjecie, tekstPolubienia);
+
+        // Przycisk "Polub" – zwiększa liczbę polubień dla bieżącego zdjęcia
+        przyciskPolub.setOnClickListener(v -> {
+            String[] dane = posty.get(wybranyPost).split(":");
+            int polubienia = Integer.parseInt(dane[1]) + 1;
+            posty.set(wybranyPost, dane[0] + ":" + polubienia);
+            aktualizujWidok(zdjecie, tekstPolubienia);
+        });
+
+        // Przycisk "Poprzednie" – przejście do poprzedniego zdjęcia
+        przyciskPoprzednie.setOnClickListener(v -> {
+            wybranyPost = (wybranyPost - 1 + zdjecia.length) % zdjecia.length;
+            aktualizujWidok(zdjecie, tekstPolubienia);
+        });
+
+        // Przycisk "Następne" – przejście do następnego zdjęcia
+        przyciskNastepne.setOnClickListener(v -> {
+            wybranyPost = (wybranyPost + 1) % zdjecia.length;
+            aktualizujWidok(zdjecie, tekstPolubienia);
+        });
+    }
+
+    // Tworzy domyślną listę postów (każdy z 0 polubień)
+    private void inicjalizujPosty() {
+        posty.clear();
+        for (String nazwa : zdjecia) {
+            posty.add(nazwa + ":0");
+        }
+        wybranyPost = 0;
+    }
+
+    // Aktualizuje wyświetlane zdjęcie i liczbę polubień
+    private void aktualizujWidok(ImageView zdjecie, TextView tekstPolubienia) {
+        String[] dane = posty.get(wybranyPost).split(":");
+        String nazwaZdjecia = dane[0];
+        String polubienia = dane[1];
+
+        tekstPolubienia.setText("Polubienia: " + polubienia);
+
+        int idZdjecia = getResources().getIdentifier(nazwaZdjecia, "drawable", getPackageName());
+        zdjecie.setImageResource(idZdjecia);
+    }
+
+    // Zapis danych przy obrocie ekranu
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList(KLUCZ_POSTY, posty);
+        outState.putInt(KLUCZ_POZYCJA, wybranyPost);
+    }
+}

@@ -1,0 +1,28 @@
+Kliknij prawym przyciskiem na folder:
+
+app → res → mipmap-anydpi-v26
+
+albo po prostu na folder res.
+
+Wybierz:
+🧭 New → Image Asset
+
+Otworzy się kreator “Asset Studio”.
+
+Wybierz typ ikony:
+
+“Launcher Icons (Adaptive and Legacy)” – to ta, której potrzebujesz.
+
+W sekcji Foreground Layer:
+
+Możesz wybrać:
+
+własny obraz (Image) – kliknij Path i wskaż plik .png lub .svg
+
+albo ikonę z Android Studio (np. „ic_star”).
+
+W sekcji Background Layer:
+
+Możesz ustawić kolor tła lub zostawić przezroczyste.
+
+Kliknij Next, potem Finish ✅

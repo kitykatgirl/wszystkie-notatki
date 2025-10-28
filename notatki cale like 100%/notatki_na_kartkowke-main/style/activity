@@ -1,0 +1,9 @@
+<resources>
+    <!-- Styl dla wszystkich przycisków -->
+    <style name="StylPrzycisku">
+        <item name="android:background">#2196F3</item>   <!-- kolor tła -->
+        <item name="android:textColor">#FFFFFF</item>     <!-- kolor tekstu -->
+        <item name="android:textSize">18sp</item>         <!-- rozmiar czcionki -->
+        <item name="android:padding">12dp</item>          <!-- wewnętrzny margines -->
+    </style>
+</resources>

@@ -1,0 +1,42 @@
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+
+public class MainActivity extends Activity {
+    private int ilosc = 0; // Wartość do wyświetlenia
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Inicjalizacja widoków
+        TextView tekst = findViewById(R.id.tekst);
+        Button przycisk = findViewById(R.id.przycisk);
+
+        // Odczyt wartości po obrocie ekranu
+        if (savedInstanceState != null) {
+            ilosc = savedInstanceState.getInt("NUMERPYTANIA", 0); // Odczyt z Bundle
+        } else {
+            ilosc = 0; // Domyślna wartość
+        }
+
+        tekst.setText(String.valueOf(ilosc)); // Wyświetlenie wartości
+
+        // Zwiększenie wartości o 1 po kliknięciu
+        przycisk.setOnClickListener(v -> {
+            ilosc++;
+            tekst.setText(String.valueOf(ilosc));
+        });
+    }
+
+    // Zapis wartości przed obrotem ekranu
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("NUMERPYTANIA", ilosc); // Zapis do Bundle
+    }
+}

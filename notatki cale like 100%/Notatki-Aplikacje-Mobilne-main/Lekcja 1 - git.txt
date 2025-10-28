@@ -1,0 +1,38 @@
+create git repo in terminal - git init
+
+add all files to repo - git add . 
+
+get repo status - git status
+
+add myself to repo (at home add --global before user. NOT ON SCHOOL PC):
+- git config user.name "<< my username >>"
+- git config user.email "<< my email >>"
+
+(e/n: do this before commit (kida obv but you kinda stupid autismo))
+
+commit to repo - git commit -m "<< name of the commit or smthn >>"
+
+see repo logs - git log
+
+example log:
+
+PS C:\Users\Programista\Desktop\powtuszenie klasie 3> git log
+commit 970cdb452c8019536b7127e55bb2d8ed9646b2d5 (HEAD -> master)
+Author: kitykatgirl <kamilord220@vp.pl>
+Date:   Tue Sep 9 07:49:06 2025 +0200
+
+(e/n: this shi kinda cool ngl)
+
+
+push repo to github
+
+1. create new repo on github
+2. get the git remote add origin line from the code box and run it
+example: git remote add origin https://github.com/kitykatgirl/klasa-3-powtorzenie.git
+3. for first time - git push -u origin master
+	other time - git push
+
+(e/n REMEMBER TO LOG OUT AFTER CLASS)
+
+Things to log out of:
+	- Github > > > EVERYWHERE < < <

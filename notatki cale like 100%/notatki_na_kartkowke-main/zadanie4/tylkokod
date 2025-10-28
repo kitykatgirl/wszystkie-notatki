@@ -1,0 +1,7 @@
+// W onCreate lub onClick
+View myView = findViewById(R.id.my_element_id);
+myView.setVisibility(View.GONE); // Znika całkowicie (nie zajmuje miejsca)
+// Lub View.INVISIBLE - ukryty, ale zajmuje miejsce
+
+// Aby pokazać ponownie:
+myView.setVisibility(View.VISIBLE);

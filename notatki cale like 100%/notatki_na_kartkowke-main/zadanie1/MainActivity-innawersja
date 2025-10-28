@@ -1,0 +1,93 @@
+package com.example.zdjecialike;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity {
+
+    private ImageView obrazek;
+    private TextView tekstPolubienia;
+    private Button przyciskLewo, przyciskPrawo, przyciskPolub;
+
+    // Tablica ze zdjęciami
+    private int[] zdjecia = {
+            R.drawable.sample1,
+            R.drawable.sample2,
+            R.drawable.sample3
+    };
+
+    // Tablica z liczbą polubień dla każdego zdjęcia
+    private int[] polubienia = {0, 0, 0};
+
+    // Indeks aktualnego zdjęcia
+    private int indeksAktualnego = 0;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        obrazek = findViewById(R.id.imageView);
+        tekstPolubienia = findViewById(R.id.likesTextView);
+        przyciskLewo = findViewById(R.id.prevButton);
+        przyciskPrawo = findViewById(R.id.nextButton);
+        przyciskPolub = findViewById(R.id.likeButton);
+
+        // Przywracanie danych po obrocie ekranu
+        if (savedInstanceState != null) {
+            indeksAktualnego = savedInstanceState.getInt("indeksAktualnego");
+            polubienia = savedInstanceState.getIntArray("polubienia");
+        }
+
+        // Ustawiamy pierwszy obrazek i liczbę polubień
+        ustawObrazek();
+        ustawTekstPolubien();
+
+        // Przycisk "Lewo"
+        przyciskLewo.setOnClickListener(v -> {
+            if (indeksAktualnego > 0) {
+                indeksAktualnego--;
+            } else {
+                indeksAktualnego = zdjecia.length - 1;
+            }
+            ustawObrazek();
+            ustawTekstPolubien();
+        });
+
+        // Przycisk "Prawo"
+        przyciskPrawo.setOnClickListener(v -> {
+            if (indeksAktualnego < zdjecia.length - 1) {
+                indeksAktualnego++;
+            } else {
+                indeksAktualnego = 0;
+            }
+            ustawObrazek();
+            ustawTekstPolubien();
+        });
+
+        // Przycisk "Polub"
+        przyciskPolub.setOnClickListener(v -> {
+            polubienia[indeksAktualnego]++; // tylko aktualne zdjęcie dostaje +1
+            ustawTekstPolubien();
+        });
+    }
+
+    private void ustawObrazek() {
+        obrazek.setImageResource(zdjecia[indeksAktualnego]);
+    }
+
+    private void ustawTekstPolubien() {
+        tekstPolubienia.setText("Polubienia: " + polubienia[indeksAktualnego]);
+    }
+
+    // Zapis danych przy obrocie ekranu
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("indeksAktualnego", indeksAktualnego);
+        outState.putIntArray("polubienia", polubienia);
+    }
+}

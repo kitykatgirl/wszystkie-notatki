@@ -1,0 +1,31 @@
+Otwórz folder:
+
+app → res → values → strings.xml
+
+
+Tam masz np.:
+
+<resources>
+    <string name="app_name">Moja Aplikacja</string>
+    <string name="hello">Cześć!</string>
+</resources>
+
+
+Kliknij prawym na folder values → New → Value Resource File
+Nazwij plik: strings.xml
+
+W sekcji Available qualifiers kliknij:
+➕ Locale
+i wybierz np. French (fr)
+
+Utworzy się folder:
+
+res/values-fr/strings.xml
+
+
+Otwórz ten nowy plik i przetłumacz teksty:
+
+<resources>
+    <string name="app_name">Mon Application</string>
+    <string name="hello">Salut !</string>
+</resources>

@@ -1,0 +1,122 @@
+package com.example.uczniowie;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+// Klasa reprezentująca jednego ucznia
+class Uczen {
+    String imie;
+    int ocena;
+
+    Uczen(String imie, int ocena) {
+        this.imie = imie;
+        this.ocena = ocena;
+    }
+}
+
+public class MainActivity extends Activity {
+
+    // Lista uczniów (każdy uczeń ma swoje imię i ocenę)
+    private ArrayList<Uczen> uczniowie = new ArrayList<>();
+
+    // Indeks aktualnego ucznia
+    private int indeksUcznia = 0;
+
+    // Klucze do zapisu danych przy obrocie ekranu
+    private static final String KLUCZ_OCENY = "oceny";
+    private static final String KLUCZ_POZYCJA = "pozycja";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Połączenie z elementami interfejsu
+        TextView uczenTekst = findViewById(R.id.uczenTekst);
+        TextView ocenaTekst = findViewById(R.id.ocenaTekst);
+        Button przyciskPoprzedni = findViewById(R.id.przyciskPoprzedni);
+        Button przyciskNastepny = findViewById(R.id.przyciskNastepny);
+        Button przyciskPlus = findViewById(R.id.przyciskPlus);
+        Button przyciskMinus = findViewById(R.id.przyciskMinus);
+
+        // Jeśli to pierwsze uruchomienie aplikacji
+        if (savedInstanceState == null) {
+            // Dodajemy uczniów razem z przypisaną oceną
+            uczniowie.add(new Uczen("Kasia", 5));
+            uczniowie.add(new Uczen("Marek", 3));
+            uczniowie.add(new Uczen("Ola", 4));
+            uczniowie.add(new Uczen("Tomek", 2));
+
+            indeksUcznia = 0; // Zaczynamy od pierwszego ucznia
+        } else {
+            // Po obrocie ekranu: odczyt danych
+            ArrayList<Integer> zapisaneOceny = savedInstanceState.getIntegerArrayList(KLUCZ_OCENY);
+            indeksUcznia = savedInstanceState.getInt(KLUCZ_POZYCJA, 0);
+
+            // Odtwarzamy listę uczniów z zachowanymi ocenami
+            uczniowie.add(new Uczen("Kasia", zapisaneOceny.get(0)));
+            uczniowie.add(new Uczen("Marek", zapisaneOceny.get(1)));
+            uczniowie.add(new Uczen("Ola", zapisaneOceny.get(2)));
+            uczniowie.add(new Uczen("Tomek", zapisaneOceny.get(3)));
+        }
+
+        // Wyświetlamy dane aktualnego ucznia
+        aktualizujWidok(uczenTekst, ocenaTekst);
+
+        // Przycisk "Poprzedni uczeń"
+        przyciskPoprzedni.setOnClickListener(v -> {
+            indeksUcznia = (indeksUcznia - 1 + uczniowie.size()) % uczniowie.size();
+            aktualizujWidok(uczenTekst, ocenaTekst);
+        });
+
+        // Przycisk "Następny uczeń"
+        przyciskNastepny.setOnClickListener(v -> {
+            indeksUcznia = (indeksUcznia + 1) % uczniowie.size();
+            aktualizujWidok(uczenTekst, ocenaTekst);
+        });
+
+        // Przycisk "+" – zwiększa ocenę (maks. 6)
+        przyciskPlus.setOnClickListener(v -> {
+            Uczen u = uczniowie.get(indeksUcznia);
+            if (u.ocena < 6) {
+                u.ocena++;
+                aktualizujWidok(uczenTekst, ocenaTekst);
+            }
+        });
+
+        // Przycisk "-" – zmniejsza ocenę (min. 1)
+        przyciskMinus.setOnClickListener(v -> {
+            Uczen u = uczniowie.get(indeksUcznia);
+            if (u.ocena > 1) {
+                u.ocena--;
+                aktualizujWidok(uczenTekst, ocenaTekst);
+            }
+        });
+    }
+
+    // Aktualizacja widoku
+    private void aktualizujWidok(TextView uczenTekst, TextView ocenaTekst) {
+        Uczen u = uczniowie.get(indeksUcznia);
+        uczenTekst.setText("Uczeń: " + u.imie);
+        ocenaTekst.setText("Ocena: " + u.ocena);
+    }
+
+    // Zapis danych przy obrocie ekranu
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Zapisujemy oceny w osobnej liście
+        ArrayList<Integer> zapisaneOceny = new ArrayList<>();
+        for (Uczen u : uczniowie) {
+            zapisaneOceny.add(u.ocena);
+        }
+
+        outState.putIntegerArrayList(KLUCZ_OCENY, zapisaneOceny);
+        outState.putInt(KLUCZ_POZYCJA, indeksUcznia);
+    }
+}

@@ -1,0 +1,133 @@
+package com.example.uczniowie;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class MainActivity extends Activity {
+
+    // --- Klasa wewnętrzna reprezentująca jednego ucznia ---
+    // Każdy uczeń ma imię i ocenę (liczbową od 1 do 6)
+    static class Uczen {
+        String imie;  // imię ucznia
+        int ocena;    // aktualna ocena ucznia
+
+        // Konstruktor – tworzy nowego ucznia z imieniem i oceną
+        Uczen(String imie, int ocena) {
+            this.imie = imie;
+            this.ocena = ocena;
+        }
+    }
+
+    // --- Lista wszystkich uczniów ---
+    // Tworzymy listę od razu przy starcie aplikacji (bez potrzeby dodawania w onCreate)
+    private ArrayList<Uczen> uczniowie = new ArrayList<>(
+            Arrays.asList(
+                    new Uczen("Kasia", 5),
+                    new Uczen("Marek", 3),
+                    new Uczen("Ola", 4),
+                    new Uczen("Tomek", 2)
+            )
+    );
+
+    // Zmienna przechowująca indeks (pozycję) aktualnie wyświetlanego ucznia
+    private int indeksUcznia = 0;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main); // ustawienie układu z XML-a
+
+        // --- Powiązanie zmiennych z elementami interfejsu ---
+        TextView uczenTekst = findViewById(R.id.uczenTekst);   // tekst z imieniem ucznia
+        TextView ocenaTekst = findViewById(R.id.ocenaTekst);   // tekst z oceną
+        Button poprzedni = findViewById(R.id.przyciskPoprzedni);
+        Button nastepny = findViewById(R.id.przyciskNastepny);
+        Button plus = findViewById(R.id.przyciskPlus);
+        Button minus = findViewById(R.id.przyciskMinus);
+
+        // --- Odtworzenie danych po obrocie ekranu ---
+        // Jeśli system Android przekazał zapisany stan (np. po zmianie orientacji)
+        if (savedInstanceState != null) {
+            // odczytaj aktualny indeks ucznia (który był wyświetlany)
+            indeksUcznia = savedInstanceState.getInt("indeks", 0);
+
+            // odczytaj tablicę zapisanych ocen
+            int[] oceny = savedInstanceState.getIntArray("oceny");
+
+            // jeśli oceny zostały zapisane – przywracamy je uczniom
+            if (oceny != null) {
+                for (int i = 0; i < uczniowie.size(); i++) {
+                    uczniowie.get(i).ocena = oceny[i];
+                }
+            }
+        }
+
+        // --- Wyświetlenie danych pierwszego (lub zapisanego) ucznia ---
+        aktualizujWidok(uczenTekst, ocenaTekst);
+
+        // --- Obsługa przycisku "Poprzedni" ---
+        // Cofamy się do poprzedniego ucznia (cyklicznie)
+        poprzedni.setOnClickListener(v -> {
+            indeksUcznia = (indeksUcznia - 1 + uczniowie.size()) % uczniowie.size();
+            aktualizujWidok(uczenTekst, ocenaTekst);
+        });
+
+        // --- Obsługa przycisku "Następny" ---
+        // Przechodzimy do kolejnego ucznia (cyklicznie)
+        nastepny.setOnClickListener(v -> {
+            indeksUcznia = (indeksUcznia + 1) % uczniowie.size();
+            aktualizujWidok(uczenTekst, ocenaTekst);
+        });
+
+        // --- Obsługa przycisku "+" ---
+        // Zwiększamy ocenę o 1, ale maksymalnie do 6
+        plus.setOnClickListener(v -> {
+            Uczen u = uczniowie.get(indeksUcznia);
+            if (u.ocena < 6) {   // nie przekraczamy 6
+                u.ocena++;
+            }
+            aktualizujWidok(uczenTekst, ocenaTekst);
+        });
+
+        // --- Obsługa przycisku "-" ---
+        // Zmniejszamy ocenę o 1, ale minimalnie do 1
+        minus.setOnClickListener(v -> {
+            Uczen u = uczniowie.get(indeksUcznia);
+            if (u.ocena > 1) {   // nie schodzimy poniżej 1
+                u.ocena--;
+            }
+            aktualizujWidok(uczenTekst, ocenaTekst);
+        });
+    }
+
+    // --- Metoda aktualizująca tekst w interfejsie ---
+    // Wywoływana po każdej zmianie ucznia lub oceny
+    private void aktualizujWidok(TextView uczenTekst, TextView ocenaTekst) {
+        Uczen u = uczniowie.get(indeksUcznia);
+        uczenTekst.setText("Uczeń: " + u.imie);
+        ocenaTekst.setText("Ocena: " + u.ocena);
+    }
+
+    // --- Zapis danych przy obrocie ekranu ---
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // zapisz, który uczeń był aktualnie wyświetlany
+        outState.putInt("indeks", indeksUcznia);
+
+        // zapisz oceny wszystkich uczniów w tablicy
+        int[] oceny = new int[uczniowie.size()];
+        for (int i = 0; i < uczniowie.size(); i++) {
+            oceny[i] = uczniowie.get(i).ocena;
+        }
+
+        // umieść tablicę w "paczkę" (Bundle)
+        outState.putIntArray("oceny", oceny);
+    }
+}

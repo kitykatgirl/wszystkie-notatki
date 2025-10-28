@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <!-- Nazwa aktualnego ucznia -->
+    <TextView
+        android:id="@+id/uczenTekst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Uczeń: "
+        android:textSize="24sp"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- Ocena ucznia -->
+    <TextView
+        android:id="@+id/ocenaTekst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ocena: "
+        android:textSize="22sp"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Strzałki do zmiany ucznia -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="24dp">
+
+        <Button
+            android:id="@+id/przyciskPoprzedni"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="← Poprzedni"
+            android:layout_marginEnd="16dp"/>
+
+        <Button
+            android:id="@+id/przyciskNastepny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Następny →"/>
+    </LinearLayout>
+
+    <!-- Strzałki do zmiany oceny -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/przyciskMinus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="–"
+            android:textSize="24sp"
+            android:layout_marginEnd="24dp"/>
+
+        <Button
+            android:id="@+id/przyciskPlus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:textSize="24sp"/>
+    </LinearLayout>
+
+</LinearLayout>
