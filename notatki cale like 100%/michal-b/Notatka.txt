@@ -1,0 +1,192 @@
+
+
+# 📝 Notatka – Android Studio (Java)
+
+---
+
+## 🧩 1. Dodanie ikony aplikacji (App Icon)
+
+**Jak ustawić własną ikonę aplikacji w Android Studio:**
+
+### 🔧 Kroki:
+
+1. W panelu projektu kliknij:
+
+   ```
+   app → res → mipmap → ic_launcher
+   ```
+2. Kliknij **prawym przyciskiem → New → Image Asset**
+3. W oknie:
+
+   * Wybierz typ: `Launcher Icons (Adaptive and Legacy)`
+   * Wskaż plik (PNG, JPG, SVG)
+   * Kliknij **Next → Finish**
+4. Android Studio doda odpowiednie pliki do `res/mipmap-*`
+5. Sprawdź, że w `AndroidManifest.xml` masz:
+
+   ```xml
+   <application
+       android:icon="@mipmap/ic_launcher"
+       android:label="@string/app_name">
+   ```
+
+📌 Ikony są w `res/mipmap-*` dla różnych rozdzielczości.
+
+---
+
+## 👁️‍🗨️ 2. Ukrywanie elementu po kliknięciu
+
+Przykład:
+
+```java
+public void hideButton(View view) {
+    view.setVisibility(View.INVISIBLE); // ukryty, ale zajmuje miejsce
+    // lub
+    // view.setVisibility(View.GONE); // całkowicie znika z układu
+}
+```
+
+W XML:
+
+```xml
+<Button
+    android:id="@+id/buttonHide"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Kliknij mnie"
+    android:onClick="hideButton" />
+```
+
+---
+
+## 💾 3. Zapamiętywanie danych przy obrocie ekranu
+
+```java
+public class MainActivity extends AppCompatActivity {
+
+    private int licznik = 0;
+    private TextView textView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        textView = findViewById(R.id.textView);
+
+        if (savedInstanceState != null) {
+            licznik = savedInstanceState.getInt("licznik");
+            textView.setText("Licznik: " + licznik);
+        }
+    }
+
+    public void addLike(View view) {
+        licznik++;
+        textView.setText("Licznik: " + licznik);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("licznik", licznik);
+    }
+}
+```
+
+W XML:
+
+```xml
+<Button
+    android:id="@+id/buttonLike"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Polub"
+    android:onClick="addLike"/>
+
+<TextView
+    android:id="@+id/textView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Licznik: 0"/>
+```
+
+---
+
+## 🌍 4. Dodanie tłumaczeń (String Resources)
+
+### 🧠 Co to jest:
+
+Wszystkie napisy (tekst w aplikacji) powinny być zapisane w pliku `res/values/strings.xml`.
+Dzięki temu można łatwo dodać inne języki (np. angielski, hiszpański itd.).
+
+---
+
+### 🪄 Jak to zrobić w Android Studio:
+
+1. Otwórz:
+
+   ```
+   app → res → values → strings.xml
+   ```
+
+2. Wpisz swoje napisy, np.:
+
+   ```xml
+   <resources>
+       <string name="app_name">Moja Aplikacja</string>
+       <string name="button_like">Polub</string>
+       <string name="text_likes">Licznik polubień:</string>
+   </resources>
+   ```
+
+3. W pliku XML (layout) używaj:
+
+   ```xml
+   android:text="@string/button_like"
+   ```
+
+4. Aby dodać tłumaczenie:
+
+   * Kliknij prawym na `strings.xml`
+   * Wybierz **Open Translations Editor**
+   * Kliknij **globe 🌍 lub + Add Locale**
+   * Wybierz język, np. `en` (English)
+   * Wprowadź tłumaczenia w kolumnie po prawej stronie
+
+   Android Studio automatycznie utworzy nowy plik:
+
+   ```
+   res/values-en/strings.xml
+   ```
+
+   z zawartością np.:
+
+   ```xml
+   <resources>
+       <string name="app_name">My App</string>
+       <string name="button_like">Like</string>
+       <string name="text_likes">Likes count:</string>
+   </resources>
+   ```
+
+---
+
+### 📘 Działanie:
+
+Aplikacja **automatycznie wybierze język** pasujący do języka telefonu użytkownika.
+Nie trzeba nic więcej robić w kodzie!
+
+---
+
+## ✨ Szybkie podsumowanie
+
+| Zadanie            | Co zrobić                       | Gdzie                    |
+| ------------------ | ------------------------------- | ------------------------ |
+| Ikona aplikacji    | `New → Image Asset`             | `res/mipmap-*`           |
+| Ukrycie elementu   | `view.setVisibility(View.GONE)` | W kodzie Java lub XML    |
+| Zapis przy obrocie | `onSaveInstanceState()`         | W `Activity`             |
+| Tłumaczenia        | `Open Translations Editor`      | `res/values/strings.xml` |
+
+---
+
+

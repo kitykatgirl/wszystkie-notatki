@@ -1,0 +1,273 @@
+
+
+---
+
+# 🧱 NOTATKA: Najważniejsze właściwości i funkcje XML w Android Studio
+
+---
+
+## 📐 1️⃣ Ustawienia rozmiarów i pozycjonowania
+
+| Atrybut                                          | Opis                                                   | Przykład                                          |
+| ------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------- |
+| `android:layout_width` / `android:layout_height` | Szerokość i wysokość elementu                          | `match_parent`, `wrap_content`, `200dp`           |
+| `android:layout_margin`                          | Margines na zewnątrz elementu                          | `android:layout_margin="16dp"`                    |
+| `android:padding`                                | Odstęp wewnątrz elementu                               | `android:padding="8dp"`                           |
+| `android:gravity`                                | Wyrównanie **zawartości** w elemencie                  | `android:gravity="center"`                        |
+| `android:layout_gravity`                         | Wyrównanie **samego elementu** w układzie nadrzędnym   | `android:layout_gravity="center_horizontal"`      |
+| `android:orientation`                            | Kierunek ułożenia elementów w `LinearLayout`           | `android:orientation="vertical"` lub `horizontal` |
+| `android:layout_weight`                          | Proporcje zajmowanego miejsca (tylko w `LinearLayout`) | `android:layout_weight="1"`                       |
+
+---
+
+## 🧭 2️⃣ Użycie ConstraintLayout (bardziej zaawansowane)
+
+ConstraintLayout pozwala przypinać elementy względem innych elementów lub krawędzi ekranu.
+Najczęściej używane atrybuty:
+
+| Atrybut                                                    | Działanie                                               |
+| ---------------------------------------------------------- | ------------------------------------------------------- |
+| `app:layout_constraintTop_toTopOf="parent"`                | Przypina górną krawędź do górnej krawędzi układu        |
+| `app:layout_constraintBottom_toBottomOf="@id/innyElement"` | Przypina dół do innego elementu                         |
+| `app:layout_constraintStart_toStartOf="parent"`            | Wyrównanie do lewej (początek)                          |
+| `app:layout_constraintEnd_toEndOf="parent"`                | Wyrównanie do prawej (koniec)                           |
+| `app:layout_constraintHorizontal_bias="0.5"`               | Ustawienie pozycji w poziomie (0.0 = lewo, 1.0 = prawo) |
+| `app:layout_constraintVertical_bias="0.5"`                 | Ustawienie pozycji w pionie (0.0 = góra, 1.0 = dół)     |
+
+💡 *W ConstraintLayout zawsze trzeba przypiąć element w pionie i poziomie (np. top i start), inaczej „poleci” w losowe miejsce.*
+
+---
+
+## 🧩 3️⃣ Właściwości tekstu i przycisków
+
+| Atrybut              | Opis                                            | Przykład                                            |         |
+| -------------------- | ----------------------------------------------- | --------------------------------------------------- | ------- |
+| `android:text`       | Tekst elementu                                  | `android:text="Kliknij mnie"`                       |         |
+| `android:textSize`   | Rozmiar tekstu                                  | `android:textSize="18sp"`                           |         |
+| `android:textColor`  | Kolor tekstu                                    | `android:textColor="@android:color/holo_blue_dark"` |         |
+| `android:textStyle`  | Styl tekstu                                     | `bold`, `italic`, `bold                             | italic` |
+| `android:background` | Tło elementu                                    | `@color/purple_200` lub `@drawable/nazwa`           |         |
+| `android:onClick`    | Funkcja w kodzie Java, wywoływana po kliknięciu | `android:onClick="nazwaFunkcji"`                    |         |
+| `android:enabled`    | Czy przycisk jest aktywny                       | `true` / `false`                                    |         |
+| `android:visibility` | Widoczność                                      | `visible`, `invisible`, `gone`                      |         |
+
+---
+
+## 🖼️ 4️⃣ Ustawienia obrazków (`ImageView`)
+
+| Atrybut                    | Opis                                      | Przykład                                           |
+| -------------------------- | ----------------------------------------- | -------------------------------------------------- |
+| `android:src`              | Źródło obrazka                            | `@drawable/fox`                                    |
+| `app:srcCompat`            | Bezpieczniejszy odpowiednik `android:src` | `app:srcCompat="@drawable/fox"`                    |
+| `android:scaleType`        | Dopasowanie obrazu                        | `centerCrop`, `fitCenter`, `fitXY`, `centerInside` |
+| `android:adjustViewBounds` | Zachowuje proporcje obrazu                | `true`                                             |
+
+💡 *Najczęściej używane ustawienie, żeby obraz dobrze wyglądał:*
+
+```xml
+<ImageView
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:adjustViewBounds="true"
+    android:scaleType="centerCrop"
+    app:srcCompat="@drawable/fox" />
+```
+
+---
+
+## 🎛️ 5️⃣ Kolory, style, odwołania do zasobów
+
+Wszystko w Androidzie można trzymać w plikach `res/values`.
+
+| Typ zasobu | Gdzie się znajduje                       | Jak odwołać się w XML |
+| ---------- | ---------------------------------------- | --------------------- |
+| Kolory     | `res/values/colors.xml`                  | `@color/nazwa`        |
+| Napisy     | `res/values/strings.xml`                 | `@string/nazwa`       |
+| Style      | `res/values/themes.xml` lub `styles.xml` | `@style/NazwaStylu`   |
+| Obrazy     | `res/drawable/`                          | `@drawable/nazwa`     |
+
+---
+
+## ⚙️ 6️⃣ Przydatne sztuczki i triki
+
+* 🔁 **match_parent** – zajmuje całe dostępne miejsce
+* 📦 **wrap_content** – tylko tyle, ile potrzeba
+* ⚖️ **layout_weight** – proporcje przestrzeni (np. dwa przyciski po ½ ekranu)
+* 🎯 **gravity="center"** – centrowanie tekstu lub obrazka w środku
+* 🪄 **layout_gravity="center"** – centrowanie całego elementu w layoucie
+* 🚫 **visibility="gone"** – element znika całkowicie i nie zajmuje miejsca
+* 👀 **visibility="invisible"** – element znika, ale zachowuje miejsce
+
+---
+
+## 🧠 7️⃣ Przykład układu (wzorowy, prosty i czytelny)
+
+```xml
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:srcCompat="@drawable/fox"
+        android:scaleType="centerCrop"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/buttonStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:layout_gravity="center" />
+
+</LinearLayout>
+```
+
+# ⚖️ NOTATKA: RelativeLayout w Android Studio
+
+---
+
+## 🧱 1️⃣ Czym jest RelativeLayout?
+
+`RelativeLayout` to kontener, w którym **każdy element** może być ustawiony:
+
+* względem **innych elementów** (np. poniżej, obok, wyrównany do środka itp.),
+* lub względem **rodzica** (czyli samego układu).
+
+Przykład szkieletu:
+
+```xml
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- elementy tutaj -->
+
+</RelativeLayout>
+```
+
+---
+
+## 📌 2️⃣ Ustawianie elementów względem **rodzica**
+
+| Atrybut                                   | Opis                                      | Przykład |
+| ----------------------------------------- | ----------------------------------------- | -------- |
+| `android:layout_alignParentTop="true"`    | Przylega do górnej krawędzi               |          |
+| `android:layout_alignParentBottom="true"` | Przylega do dolnej krawędzi               |          |
+| `android:layout_alignParentStart="true"`  | Przylega do lewej (lub początku przy RTL) |          |
+| `android:layout_alignParentEnd="true"`    | Przylega do prawej (lub końca przy RTL)   |          |
+| `android:layout_centerHorizontal="true"`  | Wyśrodkowany w poziomie                   |          |
+| `android:layout_centerVertical="true"`    | Wyśrodkowany w pionie                     |          |
+| `android:layout_centerInParent="true"`    | Wyśrodkowany w pionie i poziomie          |          |
+
+🧭 **Przykład:**
+
+```xml
+<Button
+    android:id="@+id/buttonCenter"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Środek"
+    android:layout_centerInParent="true" />
+```
+
+---
+
+## 🔗 3️⃣ Ustawianie elementów względem **innych elementów**
+
+| Atrybut                                             | Działanie                                |
+| --------------------------------------------------- | ---------------------------------------- |
+| `android:layout_below="@id/idInnegoElementu"`       | Ustawia element poniżej innego           |
+| `android:layout_above="@id/idInnegoElementu"`       | Ustawia element powyżej innego           |
+| `android:layout_toStartOf="@id/idInnegoElementu"`   | Ustawia element po lewej stronie innego  |
+| `android:layout_toEndOf="@id/idInnegoElementu"`     | Ustawia element po prawej stronie innego |
+| `android:layout_alignStart="@id/idInnegoElementu"`  | Wyrównuje do lewej krawędzi innego       |
+| `android:layout_alignEnd="@id/idInnegoElementu"`    | Wyrównuje do prawej krawędzi innego      |
+| `android:layout_alignTop="@id/idInnegoElementu"`    | Wyrównuje do góry innego                 |
+| `android:layout_alignBottom="@id/idInnegoElementu"` | Wyrównuje do dołu innego                 |
+
+🧭 **Przykład:**
+
+```xml
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_launcher_foreground" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Witaj w aplikacji!"
+        android:textSize="18sp"
+        android:layout_below="@id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/buttonStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:layout_below="@id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+
+</RelativeLayout>
+```
+
+📱 Efekt:
+
+* Logo na środku u góry,
+* Tekst **pod logo**,
+* Przycisk **pod tekstem**, również na środku.
+
+---
+
+## 🧠 4️⃣ Zalety i wady RelativeLayout
+
+✅ **Zalety:**
+
+* Łatwy w zrozumieniu i szybki do prostych układów.
+* Wygodny, gdy trzeba coś „ustawić względem czegoś innego”.
+
+❌ **Wady:**
+
+* Przy bardzo rozbudowanych layoutach staje się mało wydajny (każdy element zależy od innych).
+* Trudniej w nim robić responsywne układy (ConstraintLayout jest dokładniejszy).
+
+---
+
+## 💡 5️⃣ Dobre praktyki
+
+* Zawsze **nadaj ID** elementom, względem których ustawiasz inne:
+  `android:id="@+id/nazwaElementu"`
+* Stosuj **marginesy (`layout_margin`)** między elementami — inaczej będą „przyklejone”.
+* Używaj `android:layout_centerInParent="true"` gdy chcesz szybko coś wyśrodkować.
+* Nie mieszaj `LinearLayout` i `RelativeLayout` bez potrzeby – lepiej wybrać jeden główny.
+
+
